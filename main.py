@@ -47,7 +47,7 @@ token_cp ='eyJjb3Vyc2VJZCI6IjQ1NjY4NyIsInR1dG9ySWQiOm51bGwsIm9yZ0lkIjo0ODA2MTksI
 
 
 async def show_random_emojis(message):
-    emojis = ['🎊', '🔮', '😎', '⚡️', '🚀', '✨', '💥', '🎉', '🥂', '🍾', '🦠', '🤖', '❤️‍🔥', '🕊️', '💃', '🥳','🐅','🦁']
+    emojis = ['🌀', '🔥', '⭐', '💫', '🌈', '☀️', '🌙', '🌸', '🌺', '🌊', '🍃', '🌿', '🍀', '🌻', '🌹', '🪷', '🌲', '☄️', '⛩️', '🕉️']
     emoji_message = await message.reply_text(' '.join(random.choices(emojis, k=1)))
     return emoji_message
     
@@ -104,8 +104,8 @@ async def sudo_command(bot: Client, message: Message):
 # INLINE KEYBOARD
 keyboard = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("🇮🇳ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°𓏲кяιѕнηα⋆🌿", url="https://t.me/HelyByKeshav1_bot")],
-        [InlineKeyboardButton("🔔ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/HelyByKeshav1_bot")],
+        [InlineKeyboardButton("🌟ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°𓏲кяιѕнηα⋆🌿", url="https://t.me/HelyByKeshav1_bot")],
+        [InlineKeyboardButton("📢ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/HelyByKeshav1_bot")],
         [InlineKeyboardButton("🦋ғᴏʟʟᴏᴡ ᴜs", url="https://t.me/HelyByKeshav1_bot")]
     ]
 )
@@ -163,7 +163,7 @@ async def start_command(bot: Client, message: Message):
 # STOP & RESTART
 @bot.on_message(filters.command("stop"))
 async def stop_handler(_, m: Message):
-    await m.reply_text("**𝗦𝘁𝗼𝗽𝗽𝗲𝗱**🚦", True)
+    await m.reply_text("**🛑 𝗦𝘁𝗼𝗽𝗽𝗲𝗱**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 @bot.on_message(filters.command("restart"))
@@ -171,7 +171,7 @@ async def restart_handler(_, m):
     if not is_authorized(m.from_user.id):
         await m.reply_text("**🚫 You are not authorized to use this command.**")
         return
-    await m.reply_text("Restarted🍁", True)
+    await m.reply_text("🔄 Restarted🍁", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 # -------------------------------------------------------------------
@@ -180,7 +180,7 @@ async def restart_handler(_, m):
 async def list_users(client: Client, msg: Message):
     if SUDO_USERS:
         users_list = "\n".join([f"User ID : `{user_id}`" for user_id in SUDO_USERS])
-        await msg.reply_text(f"SUDO_USERS :\n{users_list}")
+        await msg.reply_text(f"📋 SUDO_USERS :\n{users_list}")
     else:
         await msg.reply_text("No sudo users.")
 
@@ -189,13 +189,13 @@ async def list_users(client: Client, msg: Message):
 @bot.on_message(filters.command("help"))
 async def help_command(client: Client, msg: Message):
     help_text = (
-        "`/start` - Start the bot\n\n"
-        "`/upload` - Download and upload files (sudo)🎬\n\n"
-        "`/restart` - Restart the bot\n\n" 
-        "`/stop` - Stop ongoing process\n\n"
-        "`/sudo add` - Add user or group or channel (owner)\n\n"
-        "`/sudo remove` - Remove user or group or channel (owner)❌\n\n"
-        "`/userlist2` - List of sudo user or group or channel📜\n\n"  
+        "`/start` - 🌟 Start the bot\n\n"
+        "`/upload` - 📥 Download and upload files (sudo)🎬\n\n"
+        "`/restart` - 🔄 Restart the bot\n\n" 
+        "`/stop` - ⏹️ Stop ongoing process\n\n"
+        "`/sudo add` - ➕ Add user or group or channel (owner)\n\n"
+        "`/sudo remove` - ❌ Remove user or group or channel (owner)\n\n"
+        "`/userlist2` - 📋 List of sudo user or group or channel\n\n"  
     )
     await msg.reply_text(help_text)
 
@@ -204,10 +204,10 @@ async def help_command(client: Client, msg: Message):
 @bot.on_message(filters.command(["upload"]))
 async def upload(bot: Client, m: Message):
     if not is_authorized(m.chat.id):
-        await m.reply_text("**🚫You are not authorized to use this bot.**")
+        await m.reply_text("**🚫 You are not authorized to use this bot.**")
         return
     
-    editable = await m.reply_text(f"⚡𝗦𝗘𝗡𝗗 𝗧𝗫𝗧 𝗙𝗜𝗟𝗘⚡")
+    editable = await m.reply_text(f"⚡ 𝗦𝗘𝗡𝗗 𝗧𝗫𝗧 𝗙𝗜𝗟𝗘 ⚡")
     input: Message = await bot.listen(editable.chat.id)
     y = await input.download()
     await input.delete(True)
@@ -246,11 +246,11 @@ async def upload(bot: Client, m: Message):
                     video_count += 1
         os.remove(x)
     except:
-        await m.reply_text("😶𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗙𝗶𝗹𝗲 𝗜𝗻𝗽𝘂𝘁😶")
+        await m.reply_text("😶 𝗜𝗻𝘃𝗮𝗹𝗶𝗱 𝗙𝗶𝗹𝗲 𝗜𝗻𝗽𝘂𝘁 😶")
         os.remove(x)
         return
 
-    await editable.edit(f"`𝗧𝗼𝘁𝗮𝗹 🔗 𝗟𝗶𝗻𝗸𝘀 𝗙𝗼𝘂𝗻𝗱 𝗔𝗿𝗲 {len(links)}\n\n🔹Img : {img_count}  🔹Pdf : {pdf_count}\n🔹Zip : {zip_count}  🔹Video : {video_count}\n\n𝗦𝗲𝗻𝗱 𝗙𝗿𝗼𝗺 𝗪𝗵𝗲𝗿𝗲 𝗬𝗼𝘂 𝗪𝗮𝗻𝘁 𝗧𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱.`")
+    await editable.edit(f"**🔗 𝗧𝗼𝘁𝗮𝗹 𝗟𝗶𝗻𝗸𝘀 𝗙𝗼𝘂𝗻𝗱: {len(links)}\n\n📸 𝗜𝗺𝗴 : {img_count}  📄 𝗣𝗱𝗳 : {pdf_count}\n📦 𝗭𝗶𝗽 : {zip_count}  🎬 𝗩𝗶𝗱𝗲𝗼 : {video_count}\n\n📤 𝗦𝗲𝗻𝗱 𝗙𝗿𝗼𝗺 𝗪𝗵𝗲𝗿𝗲 𝗬𝗼𝘂 𝗪𝗮𝗻𝘁 𝗧𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱.**")
     input0: Message = await bot.listen(editable.chat.id)
     raw_text = input0.text
     await input0.delete(True)
@@ -305,7 +305,7 @@ async def upload(bot: Client, m: Message):
     else:
         CR = credit
    
-    await editable.edit("**𝗘𝗻𝘁𝗲𝗿 𝗣𝘄 𝗧𝗼𝗸𝗲𝗻 𝗙𝗼𝗿 𝗣𝘄 𝗨𝗽𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗼𝗿 𝗦𝗲𝗻𝗱 `3` 𝗙𝗼𝗿 𝗢𝘁𝗵𝗲𝗿𝘀**")
+    await editable.edit("**🔐 𝗘𝗻𝘁𝗲𝗿 𝗣𝘄 𝗧𝗼𝗸𝗲𝗻 𝗙𝗼𝗿 𝗣𝘄 𝗨𝗽𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗼𝗿 𝗦𝗲𝗻𝗱 `3` 𝗙𝗼𝗿 𝗢𝘁𝗵𝗲𝗿𝘀**")
     input4: Message = await bot.listen(editable.chat.id)
     raw_text4 = input4.text
     await input4.delete(True)
@@ -314,7 +314,7 @@ async def upload(bot: Client, m: Message):
     else:
         MR = raw_text4
     
-    await editable.edit("𝗡𝗼𝘄 𝗦𝗲𝗻𝗱 𝗧𝗵𝗲 𝗧𝗵𝘂𝗺𝗯 𝗨𝗿𝗹 𝗘𝗴 » https://graph.org/file/13a89d77002442255efad-989ac290c1b3f13b44.jpg\n\n𝗢𝗿 𝗜𝗳 𝗗𝗼𝗻'𝘁 𝗪𝗮𝗻𝘁 𝗧𝗵𝘂𝗺𝗯𝗻𝗮𝗶𝗹 𝗦𝗲𝗻𝗱 = /d")
+    await editable.edit("🖼️ 𝗡𝗼𝘄 𝗦𝗲𝗻𝗱 𝗧𝗵𝗲 𝗧𝗵𝘂𝗺𝗯 𝗨𝗿𝗹 𝗘𝗴 » https://graph.org/file/13a89d77002442255efad-989ac290c1b3f13b44.jpg\n\n📌 𝗢𝗿 𝗜𝗳 𝗗𝗼𝗻'𝘁 𝗪𝗮𝗻𝘁 𝗧𝗵𝘂𝗺𝗯𝗻𝗮𝗶𝗹 𝗦𝗲𝗻𝗱 = /d")
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
     await input6.delete(True)
@@ -327,7 +327,7 @@ async def upload(bot: Client, m: Message):
     else:
         thumb = "no"  # use generated thumbnail
 
-    failed_count =0
+    failed_count = 0
     if len(links) == 1:
         count = 1
     else:
@@ -402,71 +402,13 @@ async def upload(bot: Client, m: Message):
 
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
-                
-                # Updated Captions with Blockquote format for Batch & Live Time
-                cc_template = f'''🎬 Video #{str(count).zfill(3)}
-
-📌 Title: {name1}.({res}).mkv
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
-
-                cyt_template = f'''🎬 Video #{str(count).zfill(3)}
-
-📌 Title: {name1}.({res}).mp4
-
-🔗 Watch: <a href="{url}">Click Here</a>
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
-
-                cpvod_template = f'''🎬 Video #{str(count).zfill(3)}
-
-📌 Title: {name1}.({res}).mp4
-
-🔗 Watch: <a href="{url}">Click Here</a>
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
-
-                cimg = f'''🖼️ Image #{str(count).zfill(3)}
-
-📌 Title: {name1}.jpg
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
-
-                cczip = f'''📦 Archive #{str(count).zfill(3)}
-
-📌 Title: {name1}.zip
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
-
-                cc1 = f'''📄 Document #{str(count).zfill(3)}
-
-📌 Title: {name1}.pdf
-
-> 📚 Batch: {b_name}
-
-📥 Download By: {CR}
-
-> 📅 {live_time}'''
+                # Base caption with .mp4 placeholder (will be replaced by actual extension)
+                cc_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
+                cyt_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
+                cpvod_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
+                cimg = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.jpg\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
+                cczip = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
+                cc1 = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n</code></pre>📅 {live_time}</code></pre>**'
 
                 if "drive" in url:
                     try:
@@ -563,7 +505,7 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     await asyncio.sleep(1)
@@ -578,7 +520,7 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     await asyncio.sleep(1)
@@ -593,12 +535,12 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     time.sleep(1)
             except Exception as e:
-                await m.reply_text(f'‼️𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗙𝗮𝗶𝗹𝗲𝗱‼️\n\n'
+                await m.reply_text(f'‼️ 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗙𝗮𝗶𝗹𝗲𝗱 ‼️\n\n'
                                    f'📝𝗡𝗮𝗺𝗲 » `{name}`\n\n'
                                    f'🔗𝗨𝗿𝗹 » <a href="{url}">__**Click Here to See Link**__</a>`')
                 count += 1
@@ -607,17 +549,17 @@ async def upload(bot: Client, m: Message):
     except Exception as e:
         await m.reply_text(e)
 
-    await m.reply_text(f"`✨𝗕𝗔𝗧𝗖𝗛 𝗦𝗨𝗠𝗠𝗔𝗥𝗬✨\n\n"
+    await m.reply_text(f"`✨ 𝗕𝗔𝗧𝗖𝗛 𝗦𝗨𝗠𝗠𝗔𝗥𝗬 ✨\n\n"
                        f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
                        f"📛𝗜𝗻𝗱𝗲𝘅 𝗥𝗮𝗻𝗴𝗲 » ({raw_text} to {len(links)})\n"
                        f"📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 » {b_name}\n\n"
                        f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"✨𝗧𝗫𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬✨ : {len(links)}\n"
+                       f"📊 𝗧𝗫𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬 ✨ : {len(links)}\n"
                        f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"🔹𝗩𝗶𝗱𝗲𝗼 » {video_count}\n🔹𝗣𝗱𝗳 » {pdf_count}\n🔹𝗜𝗺𝗴 » {img_count}\n🔹𝗭𝗶𝗽 » {zip_count}\n🔹𝗙𝗮𝗶𝗹𝗲𝗱 𝗨𝗿𝗹 » {failed_count}\n\n"
+                       f"🎬 𝗩𝗶𝗱𝗲𝗼 » {video_count}\n📄 𝗣𝗱𝗳 » {pdf_count}\n🖼️ 𝗜𝗺𝗴 » {img_count}\n📦 𝗭𝗶𝗽 » {zip_count}\n❌ 𝗙𝗮𝗶𝗹𝗲𝗱 𝗨𝗿𝗹 » {failed_count}\n\n"
                        f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"✅𝗦𝗧𝗔𝗧𝗨𝗦 » 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗗`")
-    await m.reply_text(f"<pre><code>📥𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤『{CR}』</code></pre>")
+                       f"✅ 𝗦𝗧𝗔𝗧𝗨𝗦 » 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗗`")
+    await m.reply_text(f"<pre><code>📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤『{CR}』</code></pre>")
     
 
 bot.run()
