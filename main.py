@@ -403,16 +403,16 @@ async def upload(bot: Client, m: Message):
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
                 
-                # Updated Captions with new format
+                # Updated Captions with Blockquote format for Batch & Live Time
                 cc_template = f'''🎬 Video #{str(count).zfill(3)}
 
 📌 Title: {name1}.({res}).mkv
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 cyt_template = f'''🎬 Video #{str(count).zfill(3)}
 
@@ -420,11 +420,11 @@ async def upload(bot: Client, m: Message):
 
 🔗 Watch: <a href="{url}">Click Here</a>
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 cpvod_template = f'''🎬 Video #{str(count).zfill(3)}
 
@@ -432,41 +432,41 @@ async def upload(bot: Client, m: Message):
 
 🔗 Watch: <a href="{url}">Click Here</a>
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 cimg = f'''🖼️ Image #{str(count).zfill(3)}
 
 📌 Title: {name1}.jpg
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 cczip = f'''📦 Archive #{str(count).zfill(3)}
 
 📌 Title: {name1}.zip
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 cc1 = f'''📄 Document #{str(count).zfill(3)}
 
 📌 Title: {name1}.pdf
 
-📚 Batch: {b_name}
+> 📚 Batch: {b_name}
 
 📥 Download By: {CR}
 
-📅 {live_time}'''
+> 📅 {live_time}'''
 
                 if "drive" in url:
                     try:
