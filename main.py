@@ -403,12 +403,12 @@ async def upload(bot: Client, m: Message):
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
                 # Base caption with .mp4 placeholder (will be replaced by actual extension)
-                cc_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cyt_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cpvod_template = f'**🎞️ 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cimg = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.jpg\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cczip = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cc1 = f'**📁 𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cc_template = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cyt_template = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cpvod_template = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cimg = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.jpg\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cczip = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                cc1 = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
 
                 if "drive" in url:
                     try:
