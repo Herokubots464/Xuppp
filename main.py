@@ -402,13 +402,71 @@ async def upload(bot: Client, m: Message):
 
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
-                # Base caption with .mp4 placeholder (will be replaced by actual extension)
-                cc_template = f'**🎞️ 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
-                cyt_template = f'**🎞️ 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
-                cpvod_template = f'**🎞️ 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
-                cimg = f'**📁 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.jpg\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
-                cczip = f'**📁 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
-                cc1 = f'**📁 𝗜𝗱 : {str(count).zfill(3)}.\n\n\n📃𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n\n<pre><code>📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 ➤ {b_name}</code></pre>\n\n\n📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n📅 {live_time}**'
+                
+                # Updated Captions with new format
+                cc_template = f'''🎬 Video #{str(count).zfill(3)}
+
+📌 Title: {name1}.({res}).mkv
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
+
+                cyt_template = f'''🎬 Video #{str(count).zfill(3)}
+
+📌 Title: {name1}.({res}).mp4
+
+🔗 Watch: <a href="{url}">Click Here</a>
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
+
+                cpvod_template = f'''🎬 Video #{str(count).zfill(3)}
+
+📌 Title: {name1}.({res}).mp4
+
+🔗 Watch: <a href="{url}">Click Here</a>
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
+
+                cimg = f'''🖼️ Image #{str(count).zfill(3)}
+
+📌 Title: {name1}.jpg
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
+
+                cczip = f'''📦 Archive #{str(count).zfill(3)}
+
+📌 Title: {name1}.zip
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
+
+                cc1 = f'''📄 Document #{str(count).zfill(3)}
+
+📌 Title: {name1}.pdf
+
+📚 Batch: {b_name}
+
+📥 Download By: {CR}
+
+📅 {live_time}'''
 
                 if "drive" in url:
                     try:
@@ -505,7 +563,7 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     await asyncio.sleep(1)
@@ -520,7 +578,7 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     await asyncio.sleep(1)
@@ -535,7 +593,7 @@ async def upload(bot: Client, m: Message):
                     await prog.delete(True)
                     await emoji_message.delete()
                     ext = os.path.splitext(filename)[1] if filename else '.mp4'
-                    cc_final = cc_template.replace('.mp4', ext) if ext else cc_template
+                    cc_final = cc_template.replace('.mkv', ext) if ext else cc_template
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     time.sleep(1)
