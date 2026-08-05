@@ -36,6 +36,7 @@ import zipfile
 import shutil
 import ffmpeg
 from datetime import datetime, timezone, timedelta
+import yt_dlp
 
 # IST timezone (UTC +5:30)
 IST = timezone(timedelta(hours=5, minutes=30))
@@ -200,7 +201,7 @@ async def help_command(client: Client, msg: Message):
     await msg.reply_text(help_text)
 
 # -------------------------------------------------------------------
-# UPLOAD COMMAND (main logic)
+# UPLOAD COMMAND (main logic - FIXED)
 @bot.on_message(filters.command(["upload"]))
 async def upload(bot: Client, m: Message):
     if not is_authorized(m.chat.id):
@@ -220,6 +221,8 @@ async def upload(bot: Client, m: Message):
         x = y 
 
     path = f"./downloads/{m.chat.id}"
+    if not os.path.exists(path):
+        os.makedirs(path)
   
     pdf_count = 0
     img_count = 0
@@ -325,7 +328,7 @@ async def upload(bot: Client, m: Message):
         getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
         thumb = "thumb.jpg"
     else:
-        thumb = "no"  # use generated thumbnail
+        thumb = "no"
 
     failed_count = 0
     if len(links) == 1:
@@ -338,63 +341,88 @@ async def upload(bot: Client, m: Message):
             V = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","")
             url = "https://" + V
 
+            # Visionias URL handling
             if "visionias" in url:
                 async with ClientSession() as session:
                     async with session.get(url, headers={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 'Accept-Language': 'en-US,en;q=0.9', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'Pragma': 'no-cache', 'Referer': 'http://www.visionias.in/', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'cross-site', 'Upgrade-Insecure-Requests': '1', 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; RMX2121) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36', 'sec-ch-ua': '"Chromium";v="107", "Not=A?Brand";v="24"', 'sec-ch-ua-mobile': '?1', 'sec-ch-ua-platform': '"Android"',}) as resp:
                         text = await resp.text()
                         url = re.search(r"(https://.*?playlist.m3u8.*?)\"", text).group(1)
+            
+            # Classplus DRM handling
             elif "https://cpvod.testbook.com/" in url:
                 url = url.replace("https://cpvod.testbook.com/","https://media-cdn.classplusapp.com/drm/")
                 url = 'https://dragoapi.vercel.app/classplus?link=' + url
                 mpd, keys = helper.get_mps_and_keys(url)
                 url = mpd
                 keys_string = " ".join([f"--key {key}" for key in keys])
+            
+            # PW Live handling
             elif "d1d34p8vz63oiq" in url or "sec1.pw.live" in url:
                 url = f"https://anonymouspwplayer-554b25895c1a.herokuapp.com/pw?url={url}&token={raw_text4}"
+            
+            # Ace CWP handling
             elif "acecwply" in url:
                 cmd = f'yt-dlp -o "{name}.%(ext)s" -f "bestvideo[height<={raw_text2}]+bestaudio" --hls-prefer-ffmpeg --no-keep-video --remux-video mkv --no-warning "{url}"'
+            
+            # Brightcove handling
             elif "edge.api.brightcove.com" in url:
                 bcov = 'bcov_auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjQyMzg3OTEsImNvbiI6eyJpc0FkbWluIjpmYWxzZSwiYXVzZXIiOiJVMFZ6TkdGU2NuQlZjR3h5TkZwV09FYzBURGxOZHowOSIsImlkIjoiZEUxbmNuZFBNblJqVEROVmFWTlFWbXhRTkhoS2R6MDkiLCJmaXJzdF9uYW1lIjoiYVcxV05ITjVSemR6Vm10ak1WUlBSRkF5ZVNzM1VUMDkiLCJlbWFpbCI6Ik5Ga3hNVWhxUXpRNFJ6VlhiR0ppWTJoUk0wMVdNR0pVTlU5clJXSkRWbXRMTTBSU2FHRnhURTFTUlQwPSIsInBob25lIjoiVUhVMFZrOWFTbmQ1ZVcwd1pqUTViRzVSYVc5aGR6MDkiLCJhdmF0YXIiOiJLM1ZzY1M4elMwcDBRbmxrYms4M1JEbHZla05pVVQwOSIsInJlZmVycmFsX2NvZGUiOiJOalZFYzBkM1IyNTBSM3B3VUZWbVRtbHFRVXAwVVQwOSIsImRldmljZV90eXBlIjoiYW5kcm9pZCIsImRldmljZV92ZXJzaW9uIjoiUShBbmRyb2lkIDEwLjApIiwiZGV2aWNlX21vZGVsIjoiU2Ftc3VuZyBTTS1TOTE4QiIsInJlbW90ZV9hZGRyIjoiNTQuMjI2LjI1NS4xNjMsIDU0LjIyNi4yNTUuMTYzIn19.snDdd-PbaoC42OUhn5SJaEGxq0VzfdzO49WTmYgTx8ra_Lz66GySZykpd2SxIZCnrKR6-R10F5sUSrKATv1CDk9ruj_ltCjEkcRq8mAqAytDcEBp72-W0Z7DtGi8LdnY7Vd9Kpaf499P-y3-godolS_7ixClcYOnWxe2nSVD5C9c5HkyisrHTvf6NFAuQC_FD3TzByldbPVKK0ag1UnHRavX8MtttjshnRhv5gJs5DQWj4Ir_dkMcJ4JaVZO3z8j0OxVLjnmuaRBujT-1pavsr1CCzjTbAcBvdjUfvzEhObWfA1-Vl5Y4bUgRHhl1U-0hne4-5fF0aouyu71Y6W0eg'
                 url = url.split("bcov_auth")[0]+bcov
+            
+            # Classplus app DRM
             elif "classplusapp.com/drm/" in url:
                 url = 'https://dragoapi.vercel.app/classplus?link=' + url
                 mpd, keys = helper.get_mps_and_keys(url)
                 url = mpd
                 keys_string = " ".join([f"--key {key}" for key in keys])
+            
+            # Videos classplus
             elif 'videos.classplusapp' in url:
                 url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': 'eyJjb3Vyc2VJZCI6IjQ1NjY4NyIsInR1dG9ySWQiOm51bGwsIm9yZ0lkIjo0ODA2MTksImNhdGVnb3J5SWQiOm51bGx9'}).json()['url']
+            
+            # Other classplus domains
             elif "tencdn.classplusapp" in url or "media-cdn-alisg.classplusapp.com" in url or "videos.classplusapp" in url or "media-cdn.classplusapp" in url:
                 headers = {'Host': 'api.classplusapp.com', 'x-access-token': 'eyJjb3Vyc2VJZCI6IjQ1NjY4NyIsInR1dG9ySWQiOm51bGwsIm9yZ0lkIjo0ODA2MTksImNhdGVnb3J5SWQiOm51bGx9', 'user-agent': 'Mobile-Android', 'app-version': '1.4.37.1', 'api-version': '18', 'device-id': '5d0d17ac8b3c9f51', 'device-details': '2848b866799971ca_2848b8667a33216c_SDK-30', 'accept-encoding': 'gzip'}
                 params = (('url', f'{url}'),)
                 response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
                 url = response.json()['url']
-            elif "edge.api.brightcove.com" in url:
-                bcov = 'bcov_auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjQyMzg3OTEsImNvbiI6eyJpc0FkbWluIjpmYWxzZSwiYXVzZXIiOiJVMFZ6TkdGU2NuQlZjR3h5TkZwV09FYzBURGxOZHowOSIsImlkIjoiZEUxbmNuZFBNblJqVEROVmFWTlFWbXhRTkhoS2R6MDkiLCJmaXJzdF9uYW1lIjoiYVcxV05ITjVSemR6Vm10ak1WUlBSRkF5ZVNzM1VUMDkiLCJlbWFpbCI6Ik5Ga3hNVWhxUXpRNFJ6VlhiR0ppWTJoUk0wMVdNR0pVTlU5clJXSkRWbXRMTTBSU2FHRnhURTFTUlQwPSIsInBob25lIjoiVUhVMFZrOWFTbmQ1ZVcwd1pqUTViRzVSYVc5aGR6MDkiLCJhdmF0YXIiOiJLM1ZzY1M4elMwcDBRbmxrYms4M1JEbHZla05pVVQwOSIsInJlZmVycmFsX2NvZGUiOiJOalZFYzBkM1IyNTBSM3B3VUZWbVRtbHFRVXAwVVQwOSIsImRldmljZV90eXBlIjoiYW5kcm9pZCIsImRldmljZV92ZXJzaW9uIjoiUShBbmRyb2lkIDEwLjApIiwiZGV2aWNlX21vZGVsIjoiU2Ftc3VuZyBTTS1TOTE4QiIsInJlbW90ZV9hZGRyIjoiNTQuMjI2LjI1NS4xNjMsIDU0LjIyNi4yNTUuMTYzIn19.snDdd-PbaoC42OUhn5SJaEGxq0VzfdzO49WTmYgTx8ra_Lz66GySZykpd2SxIZCnrKR6-R10F5sUSrKATv1CDk9ruj_ltCjEkcRq8mAqAytDcEBp72-W0Z7DtGi8LdnY7Vd9Kpaf499P-y3-godolS_7ixClcYOnWxe2nSVD5C9c5HkyisrHTvf6NFAuQC_FD3TzByldbPVKK0ag1UnHRavX8MtttjshnRhv5gJs5DQWj4Ir_dkMcJ4JaVZO3z8j0OxVLjnmuaRBujT-1pavsr1CCzjTbAcBvdjUfvzEhObWfA1-Vl5Y4bUgRHhl1U-0hne4-5fF0aouyu71Y6W0eg'
-                url = url.split("bcov_auth")[0]+bcov
-            elif 'encrypted.m' in url:
-                appxkey = url.split('*')[1]
-                url = url.split('*')[0]
-            elif "allenplus" in url or "player.vimeo" in url :
-                if "controller/videoplay" in url :
-                    url0 = "https://player.vimeo.com/video/" + url.split("videocode=")[1].split("&videohash=")[0]
-                    url = f"https://master-api-v3.vercel.app/allenplus-vimeo?url={url0}&authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzkxOTMzNDE5NSIsInRnX3VzZXJuYW1lIjoi4p61IFtvZmZsaW5lXSIsImlhdCI6MTczODY5MjA3N30.SXzZ1MZcvMp5sGESj0hBKSghhxJ3k1GTWoBUbivUe1I"
-                else:  
-                    url = f"https://master-api-v3.vercel.app/allenplus-vimeo?url={url}&authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzkxOTMzNDE5NSIsInRnX3VzZXJuYW1lIjoi4p61IFtvZmZsaW5lXSIsImlhdCI6MTczODY5MjA3N30.SXzZ1MZcvMp5sGESj0hBKSghhxJ3k1GTWoBUbivUe1I"
+            
+            # Add a 247 video
             elif url.startswith("https://videotest.adda247.com/"):
                 if url.split("/")[3] != "demo":
                     url = f'https://videotest.adda247.com/demo/{url.split("https://videotest.adda247.com/")[1]}'
+            
+            # MPD master
             elif 'master.mpd' in url:
                 url =  f"{api_url}pw-dl?url={url}&token={token}&authorization={api_token}&q={raw_text2}"
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-            name = name1[:60]   # Remove trailing space
+            name = name1[:60]
 
-            # Force H.264 for streaming compatibility
-            if "youtu" in url:
-                ytf = f"b[height<={raw_text2}][ext=mp4][vcodec^=avc1]/bv[height<={raw_text2}][ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4][vcodec^=avc1]"
+            # ============== FIXED YOUTUBE FORMAT SELECTION ==============
+            # Check if it's a YouTube URL
+            if "youtu" in url or "youtube" in url:
+                # YouTube ke liye better format selection with H.264 codec
+                ytf = f"bestvideo[height<={raw_text2}][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<={raw_text2}][ext=mp4][vcodec^=avc1]"
+                
+                # Agar specified resolution available nahi hai toh best quality lein
+                try:
+                    ydl_opts = {
+                        'quiet': True,
+                        'no_warnings': True,
+                    }
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        info = ydl.extract_info(url, download=False)
+                        available_formats = [f for f in info['formats'] if f.get('height') and int(f['height']) <= int(raw_text2)]
+                        if not available_formats:
+                            ytf = "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4][vcodec^=avc1]"
+                except:
+                    ytf = "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[ext=mp4][vcodec^=avc1]"
             else:
-                ytf = f"bv[height<={raw_text2}][ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[height<={raw_text2}][ext=mp4][vcodec^=avc1]/b"
+                # Other websites ke liye normal format
+                ytf = f"bestvideo[height<={raw_text2}][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best[height<={raw_text2}][ext=mp4][vcodec^=avc1]/best"
 
+            # JW Player handling
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
             else:
@@ -410,6 +438,7 @@ async def upload(bot: Client, m: Message):
                 cczip = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
                 cc1 = f'**𝗜𝗻𝗱𝗲𝘅 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
 
+                # Google Drive handling
                 if "drive" in url:
                     try:
                         ka = await helper.download(url, name)
@@ -421,6 +450,8 @@ async def upload(bot: Client, m: Message):
                         await m.reply_text(str(e))
                         time.sleep(e.x)
                         continue
+                
+                # ZIP file handling
                 elif ".zip" in url:
                     try:
                         cmd = f'yt-dlp -o "{name}.zip" "{url}"'
@@ -434,6 +465,8 @@ async def upload(bot: Client, m: Message):
                         time.sleep(e.x)
                         count += 1
                         pass
+                
+                # PDF with encryption
                 elif 'pdf*' in url:
                     pdf_key = url.split('*')[1]
                     url = url.split('*')[0]
@@ -442,6 +475,8 @@ async def upload(bot: Client, m: Message):
                     count += 1
                     os.remove(pdf_enc)
                     continue
+                
+                # Normal PDF handling
                 elif ".pdf" in url:
                     try:
                         await asyncio.sleep(4)
@@ -461,6 +496,8 @@ async def upload(bot: Client, m: Message):
                         await m.reply_text(str(e))
                         time.sleep(e.x)
                         continue
+                
+                # Image handling
                 elif any(img in url.lower() for img in ['.jpeg', '.png', '.jpg']):
                     try:
                         subprocess.run(['wget', url, '-O', f'{name}.jpg'], check=True)
@@ -475,14 +512,18 @@ async def upload(bot: Client, m: Message):
                     finally:
                         if os.path.exists(f'{name}.jpg'):
                             os.remove(f'{name}.jpg')
+                
+                # YouTube handling
                 elif "youtu" in url:
                     try:
-                        await bot.send_photo(chat_id=m.chat.id, photo=photo, caption=cyt_template)
+                        await bot.send_photo(chat_id=m.chat.id, photo=cyt, caption=cyt_template)
                         count += 1
                     except Exception as e:
                         await m.reply_text(str(e))
                         await asyncio.sleep(1)
                         continue
+                
+                # WS domain handling
                 elif ".ws" in url and url.endswith(".ws"):
                     try:
                         await helper.pdf_download(f"{api_url}utkash-ws?url={url}&authorization={api_token}",f"{name}.html")
@@ -495,6 +536,8 @@ async def upload(bot: Client, m: Message):
                         await asyncio.sleep(e.x)
                         await m.reply_text(str(e))
                         continue
+                
+                # Encrypted M3U8
                 elif 'encrypted.m' in url:
                     emoji_message = await show_random_emojis(message)
                     remaining_links = len(links) - count
@@ -510,6 +553,8 @@ async def upload(bot: Client, m: Message):
                     count += 1
                     await asyncio.sleep(1)
                     continue
+                
+                # DRM CDNI
                 elif 'drmcdni' in url or 'drm/wv' in url:
                     emoji_message = await show_random_emojis(message)
                     remaining_links = len(links) - count
@@ -525,6 +570,8 @@ async def upload(bot: Client, m: Message):
                     count += 1
                     await asyncio.sleep(1)
                     continue
+                
+                # Normal video download
                 else:
                     emoji_message = await show_random_emojis(message)
                     remaining_links = len(links) - count
@@ -539,27 +586,53 @@ async def upload(bot: Client, m: Message):
                     await helper.send_vid(bot, m, cc_final, filename, thumb, name, prog)
                     count += 1
                     time.sleep(1)
+                    
             except Exception as e:
                 await m.reply_text(f'‼️ 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗶𝗻𝗴 𝗙𝗮𝗶𝗹𝗲𝗱 ‼️\n\n'
                                    f'📝𝗡𝗮𝗺𝗲 » `{name}`\n\n'
-                                   f'🔗𝗨𝗿𝗹 » <a href="{url}">__**Click Here to See Link**__</a>`')
+                                   f'🔗𝗨𝗿𝗹 » <a href="{url}">__**Click Here to See Link**__</a>')
                 count += 1
                 failed_count += 1
                 continue
+                
     except Exception as e:
-        await m.reply_text(e)
+        await m.reply_text(str(e))
 
-    await m.reply_text(f"`✨ 𝗕𝗔𝗧𝗖𝗛 𝗦𝗨𝗠𝗠𝗔𝗥𝗬 ✨\n\n"
-                       f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"📛𝗜𝗻𝗱𝗲𝘅 𝗥𝗮𝗻𝗴𝗲 » ({raw_text} to {len(links)})\n"
-                       f"📚𝗕𝗮𝘁𝗰𝗵 𝗡𝗮𝗺𝗲 » {b_name}\n\n"
-                       f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"📊 𝗧𝗫𝗧 𝗦𝗨𝗠𝗠𝗔𝗥𝗬 ✨ : {len(links)}\n"
-                       f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"🎬 𝗩𝗶𝗱𝗲𝗼 » {video_count}\n📄 𝗣𝗱𝗳 » {pdf_count}\n🖼️ 𝗜𝗺𝗴 » {img_count}\n📦 𝗭𝗶𝗽 » {zip_count}\n❌ 𝗙𝗮𝗶𝗹𝗲𝗱 𝗨𝗿𝗹 » {failed_count}\n\n"
-                       f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-                       f"✅ 𝗦𝗧𝗔𝗧𝗨𝗦 » 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗗`")
-    await m.reply_text(f"<pre><code>📥 𝗘𝘅𝘁𝗿𝗮𝗰𝘁𝗲𝗱 𝗕𝘆 ➤『{CR}』</code></pre>")
+    # ============== MODERN BATCH SUMMARY ==============
+    await m.reply_text(
+        f"<b>✨ 𝐁𝐀𝐓𝐂𝐇 𝐒𝐔𝐌𝐌𝐀𝐑𝐘 ✨</b>\n\n"
+        f"<blockquote>╔══════════════════════════╗\n"
+        f"║  📌 <b>𝐈𝐍𝐃𝐄𝐗 𝐑𝐀𝐍𝐆𝐄</b>          ║\n"
+        f"║  ────────────────────────────  ║\n"
+        f"║  ➤ <code>{raw_text}</code> <b>➜</b> <code>{len(links)}</code>         ║\n"
+        f"╚══════════════════════════╝</blockquote>\n\n"
+        f"<blockquote>╔══════════════════════════╗\n"
+        f"║  📚 <b>𝐁𝐀𝐓𝐂𝐇 𝐍𝐀𝐌𝐄</b>            ║\n"
+        f"║  ────────────────────────────  ║\n"
+        f"║  ➤ <code>{b_name}</code>           ║\n"
+        f"╚══════════════════════════╝</blockquote>\n\n"
+        f"<blockquote>╔══════════════════════════╗\n"
+        f"║  📊 <b>𝐅𝐈𝐋𝐄 𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒</b>      ║\n"
+        f"║  ────────────────────────────  ║\n"
+        f"║  🎬 𝐕𝐢𝐝𝐞𝐨     ➤ <b>{video_count}</b>     ║\n"
+        f"║  📄 𝐏𝐃𝐅       ➤ <b>{pdf_count}</b>      ║\n"
+        f"║  🖼️ 𝐈𝐦𝐚𝐠𝐞    ➤ <b>{img_count}</b>      ║\n"
+        f"║  📦 𝐙𝐢𝐩       ➤ <b>{zip_count}</b>      ║\n"
+        f"║  ❌ 𝐅𝐚𝐢𝐥𝐞𝐝  ➤ <b>{failed_count}</b>      ║\n"
+        f"╚══════════════════════════╝</blockquote>\n\n"
+        f"<blockquote>╔══════════════════════════╗\n"
+        f"║  📥 <b>𝐓𝐎𝐓𝐀𝐋 𝐅𝐈𝐋𝐄𝐒</b>          ║\n"
+        f"║  ────────────────────────────  ║\n"
+        f"║  ➤ <b>{len(links)}</b>                   ║\n"
+        f"╚══════════════════════════╝</blockquote>\n\n"
+        f"<blockquote>╔══════════════════════════╗\n"
+        f"║  ✅ <b>𝐒𝐓𝐀𝐓𝐔𝐒</b>                ║\n"
+        f"║  ────────────────────────────  ║\n"
+        f"║  🟢 <b>𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐄𝐃</b> ✓           ║\n"
+        f"╚══════════════════════════╝</blockquote>\n\n"
+        f"<pre><code>📥 𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 ➤ 『{CR}』</code></pre>",
+        disable_web_page_preview=True
+    )
     
 
 bot.run()
