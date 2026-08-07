@@ -104,7 +104,7 @@ async def sudo_command(bot: Client, message: Message):
 # INLINE KEYBOARD
 keyboard = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("🌟ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°𓏲кяιѕнηα⋆🌿", url="https://t.me/HelyByKeshav1_bot")],
+        [InlineKeyboardButton("🌟ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°𓏲кяιѕнηα⋆🌿", url="https://t.me/Helpbyparth_bot")],
         [InlineKeyboardButton("📢ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/HelyByKeshav1_bot")],
         [InlineKeyboardButton("🦋ғᴏʟʟᴏᴡ ᴜs", url="https://t.me/HelyByKeshav1_bot")]
     ]
@@ -293,9 +293,9 @@ async def upload(bot: Client, m: Message):
     input3: Message = await bot.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
-    credit = "️[°𓏲кяιѕнηα⋆🌿](https://t.me/HelyByKeshav1_bot)"
+    credit = "️[°𓏲кяιѕнηα⋆🌿](https://t.me/Helpbyparth_bot)"
     if raw_text3 == '/d':
-        CR = '[°𓏲кяιѕнηα⋆🌿](https://t.me/HelyByKeshav1_bot)'
+        CR = '[°𓏲кяιѕнηα⋆🌿](https://t.me/Helpbyparth_bot)'
     elif raw_text3:
         try:
             text, link = raw_text3.split(',')
