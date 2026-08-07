@@ -104,7 +104,7 @@ async def sudo_command(bot: Client, message: Message):
 # INLINE KEYBOARD
 keyboard = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("🌟ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°𓏲кяιѕнηα⋆🌿", url="https://t.me/Helpbyparth_bot")],
+        [InlineKeyboardButton("🌟ʙᴏᴛ ᴍᴀᴅᴇ ʙʏ°P𝐚rth ༊ ✿˖°", url="https://t.me/Helpbyparth_bot")],
         [InlineKeyboardButton("📢ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ", url="https://t.me/HelyByKeshav1_bot")],
         [InlineKeyboardButton("🦋ғᴏʟʟᴏᴡ ᴜs", url="https://t.me/HelyByKeshav1_bot")]
     ]
@@ -138,7 +138,7 @@ random_image_url = random.choice(image_urls)
 def get_start_caption(user):
     name = user.first_name if user.first_name else user.username or "User"
     return (
-        f"**ʜᴇʟʟᴏ👋 {name} welcome to°𓏲кяιѕнηα⋆🌿 bot**\n\n"
+        f"**ʜᴇʟʟᴏ👋 {name} welcome to°P𝐚rth ༊ ✿˖° bot**\n\n"
         f"➠ **ɪ ᴀᴍ ᴛxᴛ ᴛᴏ ᴠɪᴅᴇᴏ ᴜᴘʟᴏᴀᴅᴇʀ ʙᴏᴛ**\n"
         f"➠ **ғᴏʀ ᴜsᴇ ᴍᴇ sᴇɴᴅ /upload**\n"
         f"➠ **ғᴏʀ ɢᴜɪᴅᴇ sᴇɴᴅ /help**"
@@ -293,9 +293,9 @@ async def upload(bot: Client, m: Message):
     input3: Message = await bot.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
-    credit = "️[°𓏲кяιѕнηα⋆🌿](https://t.me/Helpbyparth_bot)"
+    credit = "️[°P𝐚rth ༊ ✿˖°](https://t.me/Helpbyparth_bot)"
     if raw_text3 == '/d':
-        CR = '[°𓏲кяιѕнηα⋆🌿](https://t.me/Helpbyparth_bot)'
+        CR = '[°P𝐚rth ༊ ✿˖°](https://t.me/Helpbyparth_bot)'
     elif raw_text3:
         try:
             text, link = raw_text3.split(',')
