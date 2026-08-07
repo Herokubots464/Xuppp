@@ -394,6 +394,12 @@ async def upload(bot: Client, m: Message):
             V = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","")
             url = "https://" + V
 
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
+            name = name1[:60]
+
+            # ============== FIX: Initialize cmd variable ==============
+            cmd = ""  # Default empty string
+            
             # ============== HANDLE DIFFERENT URL TYPES ==============
             
             # Visionias URL handling
@@ -450,9 +456,6 @@ async def upload(bot: Client, m: Message):
             # MPD master
             elif 'master.mpd' in url:
                 url =  f"{api_url}pw-dl?url={url}&token={token}&authorization={api_token}&q={raw_text2}"
-
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-            name = name1[:60]
 
             # ============== CREATE CAPTIONS ==============
             live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
@@ -613,7 +616,7 @@ async def upload(bot: Client, m: Message):
             elif 'encrypted.m' in url:
                 emoji_message = await show_random_emojis(m)
                 remaining_links = len(links) - count
-                Show = f"**🍁 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗜𝗡𝗚 🍁**\n\n**📝ɴᴀᴍᴇ »** `{name}`\n\n**🔗ᴛᴏᴛᴀʟ ᴜʀʟ »** {len(links)}\n\n**🗂️ɪɴᴅᴇx »** {str(count)}/{len(links)}\n\n**🌐ʀᴇᴍᴀɪɴɪɴɢ ᴜʀʟ »** {remaining_links}\n\n**❄ǫᴜᴀʟɪᴛʏ »** {res}\n\n**🔗ᴜʀʟ »** `{url}`\n\n𝗕𝗢𝗧 𝗠𝗔𝗗𝗘 𝗕𝗬 ➤ °𓏲кяιѕнηα⋆🌿\n\n🫥दुनिया वो नहीं है जो दीखती है।"
+                Show = f"**🍁 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗜𝗡𝗚 🍁**\n\n**📝ɴᴀᴍᴇ »** `{name}`\n\n**🔗ᴛᴏᴛᴀʟ ᴜʀʟ »** {len(links)}\n\n**🗂️ɪɴᴅᴇx »** {str(count)}/{len(links)}\n\n**🌐ʀᴇᴍᴀɪɴɪɴɢ ᴜʀʟ »** {remaining_links}\n\n**❄ǫᴜᴀʟɪᴛʏ »** {res}\n\n**🔗ᴜʀʟ »** `{url}`\n\n𝗕𝗢𝗧 𝗠𝗔𝗗𝗘 𝗕𝗬 ➤ °𓏲кяιѕнηα⋆🌿\n\n🫥दुनिया वो नहीं है जो दीखती है。"
                 prog = await m.reply_text(Show)
                 res_file = await helper.download_and_decrypt_video(url, cmd, name, appxkey)
                 filename = res_file
@@ -645,9 +648,16 @@ async def upload(bot: Client, m: Message):
                 
             # ============== NORMAL VIDEO ==============
             else:
+                # For normal video, create cmd if not already set
+                if not cmd:
+                    if "youtu" in url or "youtube.com" in url:
+                        cmd = f'yt-dlp -f "bestvideo[height<={raw_text2}][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best" "{url}" -o "{name}.mp4"'
+                    else:
+                        cmd = f'yt-dlp -f "bestvideo[height<={raw_text2}][ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/best" "{url}" -o "{name}.mp4"'
+                
                 emoji_message = await show_random_emojis(m)
                 remaining_links = len(links) - count
-                Show = f"**🍁 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗜𝗡𝗚 🍁**\n\n**📝ɴᴀᴍᴇ »** `{name}`\n\n**🔗ᴛᴏᴛᴀʟ ᴜʀʟ »** {len(links)}\n\n**🗂️ɪɴᴅᴇx »** {str(count)}/{len(links)}\n\n**🌐ʀᴇᴍᴀɪɴɪɴɢ ᴜʀʟ »** {remaining_links}\n\n**❄ǫᴜᴀʟɪᴛʏ »** {res}\n\n**🔗ᴜʀʟ »** `{url}`\n\n𝗕𝗢𝗧 𝗠𝗔𝗗𝗘 𝗕𝗬 ➤ °𓏲кяιѕнηα⋆🌿\n\n🫥दुनिया वो नहीं है जो दीखती है।"
+                Show = f"**🍁 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗜𝗡𝗚 🍁**\n\n**📝ɴᴀᴍᴇ »** `{name}`\n\n**🔗ᴛᴏᴛᴀʟ ᴜʀʟ »** {len(links)}\n\n**🗂️ɪɴᴅᴇx »** {str(count)}/{len(links)}\n\n**🌐ʀᴇᴍᴀɪɴɪɴɢ ᴜʀʟ »** {remaining_links}\n\n**❄ǫᴜᴀʟɪᴛʏ »** {res}\n\n**🔗ᴜʀʟ »** `{url}`\n\n𝗕𝗢𝗧 𝗠𝗔𝗗𝗘 𝗕𝗬 ➤ °𓏲кяιѕнηα⋆🌿\n\n🫥दुनिया वो नहीं है जो दीखती है。"
                 prog = await m.reply_text(Show)
                 res_file = await helper.download_video(url, cmd, name)
                 filename = res_file
