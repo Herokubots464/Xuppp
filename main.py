@@ -293,9 +293,9 @@ async def upload(bot: Client, m: Message):
     input3: Message = await bot.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
-    credit = "️[°P𝐚rth ༊ ✿˖°](https://t.me/Helpbyparth_bot)"
+    credit = "️[•Ɱའ★Krΐຮhήส•❤️‍🔥](https://t.me/+8SD8Ecle2sBmNDE9)"
     if raw_text3 == '/d':
-        CR = '[°P𝐚rth ༊ ✿˖°](https://t.me/Helpbyparth_bot)'
+        CR = '[•Ɱའ★Krΐຮhήส•❤️‍🔥](https://t.me/+8SD8Ecle2sBmNDE9)'
     elif raw_text3:
         try:
             text, link = raw_text3.split(',')
