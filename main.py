@@ -54,7 +54,7 @@ async def show_random_emojis(message):
 # Define the owner's user ID
 OWNER_ID = 5349573682  # Replace with your owner ID
 
-SUDO_USERS = [5349573682]
+SUDO_USERS = [5349573682,1193248592]
 AUTH_CHANNEL = -1002595188
 
 def is_authorized(user_id: int) -> bool:
