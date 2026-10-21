@@ -272,9 +272,11 @@ async def upload(bot: Client, m: Message):
     input3: Message = await bot.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
-    credit = "️[•Ɱའ★Krΐຮhήส•❤️‍🔥](https://t.me/+8SD8Ecle2sBmNDE9)"
+    
+    # Default Credit
+    credit = "°MR KRISHNA🇮🇳"
     if raw_text3 == '/d':
-        CR = '[•Ɱའ★Krΐຮhήส•❤️‍🔥](https://t.me/+8SD8Ecle2sBmNDE9)'
+        CR = '°MR KRISHNA🇮🇳'
     elif raw_text3:
         try:
             text, link = raw_text3.split(',')
@@ -382,13 +384,13 @@ async def upload(bot: Client, m: Message):
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
                 
-                # NEW CAPTION STYLES (EXACTLY LIKE YOUR IMAGE)
+                # EXACT SAME CAPTION AS IN YOUR IMAGE (Plain text, no bold)
                 cc_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
 🎞️ Title: {name1}
-├── Extention: {name1}.mp4
+├── Extention: {CR}.mp4
 ├── Resolution: {res}
 
 📚 Course: {b_name}
@@ -399,10 +401,10 @@ async def upload(bot: Client, m: Message):
 
                 cyt_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
 🎞️ Title: {name1}
-├── Extention: {name1}.mp4
+├── Extention: {CR}.mp4
 ├── Resolution: {res}
 ├── Video URL: <a href="{url}">Watch Here</a>
 
@@ -414,10 +416,10 @@ async def upload(bot: Client, m: Message):
 
                 cpvod_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
 🎞️ Title: {name1}
-├── Extention: {name1}.mp4
+├── Extention: {CR}.mp4
 ├── Resolution: {res}
 ├── Video URL: <a href="{url}">Watch Here</a>
 
@@ -429,10 +431,10 @@ async def upload(bot: Client, m: Message):
 
                 cimg = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
-📄 Title: {name1}
-├── Extention: {name1}.jpg
+🖼️ Title: {name1}
+├── Extention: {CR}.jpg
 
 📚 Course: {b_name}
 
@@ -442,10 +444,10 @@ async def upload(bot: Client, m: Message):
 
                 cczip = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
-📄 Title: {name1}
-├── Extention: {name1}.zip
+📦 Title: {name1}
+├── Extention: {CR}.zip
 
 📚 Course: {b_name}
 
@@ -455,10 +457,10 @@ async def upload(bot: Client, m: Message):
 
                 cc1 = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-· ─ 📚 {b_name} ─ ·
+· ─ 📚 {b_name}  ─ ·
 
 📄 Title: {name1}
-├── Extention: {name1}.pdf
+├── Extention: {CR}.pdf
 
 📚 Course: {b_name}
 
