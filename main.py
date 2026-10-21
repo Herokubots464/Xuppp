@@ -382,75 +382,87 @@ async def upload(bot: Client, m: Message):
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
                 
-                # NEW CAPTION STYLES (AS PER YOUR IMAGE)
+                # NEW CAPTION STYLES (EXACTLY LIKE YOUR IMAGE)
                 cc_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.mp4
-├── **Resolution:** {res}
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+🎞️ Title: {name1}
+├── Extention: {name1}.mp4
+├── Resolution: {res}
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
                 cyt_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.mp4
-├── **Resolution:** {res}
-├── **Video URL:** <a href="{url}">Watch Here</a>
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+🎞️ Title: {name1}
+├── Extention: {name1}.mp4
+├── Resolution: {res}
+├── Video URL: <a href="{url}">Watch Here</a>
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
                 cpvod_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.mp4
-├── **Resolution:** {res}
-├── **Video URL:** <a href="{url}">Watch Here</a>
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+🎞️ Title: {name1}
+├── Extention: {name1}.mp4
+├── Resolution: {res}
+├── Video URL: <a href="{url}">Watch Here</a>
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
                 cimg = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.jpg
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+📄 Title: {name1}
+├── Extention: {name1}.jpg
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
                 cczip = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.zip
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+📄 Title: {name1}
+├── Extention: {name1}.zip
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
                 cc1 = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
 
-🎞️ **Title:** {name1}
-├── **Extension:** {name1}.pdf
+· ─ 📚 {b_name} ─ ·
 
-📚 **Course:** {b_name}
+📄 Title: {name1}
+├── Extention: {name1}.pdf
 
-🌟 **Extracted By:** {CR}
+📚 Course: {b_name}
+
+🌟 Extracted By: {CR}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 📅 {live_time}'''
 
