@@ -110,29 +110,8 @@ keyboard = InlineKeyboardMarkup(
     ]
 )
 
-# Random image URLs for start
-image_urls = [
-    "https://graph.org/file/996d4fc24564509244988-a7d93d020c96973ba8.jpg",
-    "https://graph.org/file/96d25730136a3ea7e48de-b0a87a529feb485c8f.jpg",
-    "https://graph.org/file/6593f76ddd8c735ae3ce2-ede9fa2df40079b8a0.jpg",
-    "https://graph.org/file/a5dcdc33020aa7a488590-79e02b5a397172cc35.jpg",
-    "https://graph.org/file/0346106a432049e391181-7560294e8652f9d49d.jpg",
-    "https://graph.org/file/ba49ebe9a8e387addbcdc-be34c4cd4432616699.jpg",
-    "https://graph.org/file/26f98dec8b3966687051f-557a430bf36b660e24.jpg",
-    "https://graph.org/file/2ae78907fa4bbf3160ffa-2d69cd23fa75cb0c3a.jpg",
-    "https://graph.org/file/05ef9478729f165809dd7-3df2f053d2842ed098.jpg",
-    "https://graph.org/file/b1330861fed21c4d7275c-0f95cca72c531382c1.jpg",
-    "https://graph.org/file/0ebb95807047b062e402a-9e670a0821d74e3306.jpg",
-    "https://graph.org/file/b4e5cfd4932d154ad6178-7559c5266426c0a399.jpg",
-    "https://graph.org/file/44ffab363c1a2647989bc-00e22c1e36a9fd4156.jpg",
-    "https://graph.org/file/5f0980969b54bb13f2a8a-a3e131c00c81c19582.jpg",
-    "https://graph.org/file/6341c0aa94c803f94cdb5-225b2999a89ff87e39.jpg",
-    "https://graph.org/file/90c9f79ec52e08e5a3025-f9b73e9d17f3da5040.jpg",
-    "https://graph.org/file/1aaf27a49b6bd81692064-30016c0a382f9ae22b.jpg",
-    "https://graph.org/file/702aa31236364e4ebb2be-3f88759834a4b164a0.jpg",
-    "https://graph.org/file/d0c6b9f6566a564cd7456-27fb594d26761d3dc0.jpg",
-]
-random_image_url = random.choice(image_urls)
+# Start Image URL (Aapka diya hua link)
+random_image_url = "https://ibb.co/PsmQWNJW"
 
 # New start caption (with username)
 def get_start_caption(user):
@@ -309,8 +288,8 @@ async def upload(bot: Client, m: Message):
     input4: Message = await bot.listen(editable.chat.id)
     raw_text4 = input4.text
     await input4.delete(True)
-    if raw_text4 == 3:
-        MR = token
+    if raw_text4 == 3 or raw_text4 == "3":
+        MR = token_cp
     else:
         MR = raw_text4
     
@@ -384,7 +363,7 @@ async def upload(bot: Client, m: Message):
                 if url.split("/")[3] != "demo":
                     url = f'https://videotest.adda247.com/demo/{url.split("https://videotest.adda247.com/")[1]}'
             elif 'master.mpd' in url:
-                url =  f"{api_url}pw-dl?url={url}&token={token}&authorization={api_token}&q={raw_text2}"
+                url =  f"{api_url}pw-dl?url={url}&token={token_cp}&authorization={api_token}&q={raw_text2}"
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
             name = name1[:60]   # Remove trailing space
@@ -402,13 +381,78 @@ async def upload(bot: Client, m: Message):
 
             try:
                 live_time = datetime.now(IST).strftime("%A, %d %B %Y • %I:%M %p")
-                # Base caption with .mp4 placeholder (will be replaced by actual extension)
-                cc_template = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cyt_template = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cpvod_template = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.({res}).mp4\n\n\n🔗𝗩𝗶𝗱𝗲𝗼 𝗨𝗿𝗹 ➤ <a href="{url}">__Click Here to Watch Video__</a>\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cimg = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.jpg\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cczip = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.zip\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
-                cc1 = f'**𝐈𝐧𝐝𝐞𝐱 𝐍𝐨 : {str(count).zfill(3)}.\n\n𝗧𝗶𝘁𝗹𝗲 ➤ {name1}.pdf\n\n<pre><code>𝗕𝗮𝘁𝗰𝗵 ➤ {b_name}</code></pre>\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗱 𝗕𝘆 ➤  {CR}\n\n<pre><code>📅 {live_time}</code></pre>**'
+                
+                # NEW CAPTION STYLES (AS PER YOUR IMAGE)
+                cc_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.mp4
+├── **Resolution:** {res}
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
+
+                cyt_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.mp4
+├── **Resolution:** {res}
+├── **Video URL:** <a href="{url}">Watch Here</a>
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
+
+                cpvod_template = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.mp4
+├── **Resolution:** {res}
+├── **Video URL:** <a href="{url}">Watch Here</a>
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
+
+                cimg = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.jpg
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
+
+                cczip = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.zip
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
+
+                cc1 = f'''───── ✦ {str(count).zfill(2)} ✦ ─────
+
+🎞️ **Title:** {name1}
+├── **Extension:** {name1}.pdf
+
+📚 **Course:** {b_name}
+
+🌟 **Extracted By:** {CR}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+📅 {live_time}'''
 
                 if "drive" in url:
                     try:
@@ -477,7 +521,7 @@ async def upload(bot: Client, m: Message):
                             os.remove(f'{name}.jpg')
                 elif "youtu" in url:
                     try:
-                        await bot.send_photo(chat_id=m.chat.id, photo=photo, caption=cyt_template)
+                        await bot.send_photo(chat_id=m.chat.id, photo=thumb, caption=cyt_template)
                         count += 1
                     except Exception as e:
                         await m.reply_text(str(e))
